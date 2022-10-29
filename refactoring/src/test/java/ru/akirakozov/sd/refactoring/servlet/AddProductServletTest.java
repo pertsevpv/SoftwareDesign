@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import org.mockito.junit.MockitoJUnitRunner;
+import ru.akirakozov.sd.refactoring.dao.ProductDao;
 
 import java.io.IOException;
 
@@ -17,6 +18,11 @@ public class AddProductServletTest extends BaseServletTest<AddProductServlet> {
   @Override
   protected AddProductServlet initServlet() {
     return new AddProductServlet(productDao);
+  }
+
+  @Override
+  protected ProductDao initDao() {
+    return new ProductDao();
   }
 
   @Test
