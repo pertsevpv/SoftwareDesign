@@ -16,7 +16,7 @@ public class AddProductServletTest extends BaseServletTest<AddProductServlet> {
 
   @Override
   protected AddProductServlet initServlet() {
-    return new AddProductServlet();
+    return new AddProductServlet(productDao);
   }
 
   @Test

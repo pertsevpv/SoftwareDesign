@@ -3,6 +3,7 @@ package ru.akirakozov.sd.refactoring.servlet;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import ru.akirakozov.sd.refactoring.dao.ProductDao;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ public abstract class BaseServletTest<S extends HttpServlet> {
 
   protected S servlet;
   protected PrintWriter printWriter;
+  protected final ProductDao productDao = new ProductDao();
   @Mock
   protected HttpServletRequest request;
   @Mock
