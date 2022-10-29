@@ -25,6 +25,7 @@ public abstract class BaseServletTest<S extends HttpServlet> {
 
   protected static final String NAME_PARAM = "name";
   protected static final String PRICE_PARAM = "price";
+  protected static final String COMMAND_PARAM = "command";
   protected static final String NAME1 = "NAME1";
   protected static final String PRICE1 = "100";
   protected static final String NAME2 = "NAME2";
@@ -33,12 +34,17 @@ public abstract class BaseServletTest<S extends HttpServlet> {
   protected static final String PRICE3 = "300";
   protected static final String FAIL_PRICE = "ABACABA";
   protected static final String OK = "OK";
+  protected static final String MIN = "min";
+  protected static final String MAX = "max";
+  protected static final String COUNT = "count";
+  protected static final String SUM = "sum";
   protected static final List<Product> EMPTY_LIST = List.of();
   protected static final List<Product> PRODUCT_LIST = List.of(
     new Product(NAME1, Long.parseLong(PRICE1)),
     new Product(NAME2, Long.parseLong(PRICE2)),
     new Product(NAME3, Long.parseLong(PRICE3))
   );
+  protected static final Long PRICE_SUM = 600L;
 
   @Before
   public void before() throws IOException {
