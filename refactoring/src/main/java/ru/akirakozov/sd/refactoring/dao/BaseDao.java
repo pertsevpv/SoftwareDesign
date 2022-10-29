@@ -12,21 +12,17 @@ public abstract class BaseDao<T> {
   private static final String TEST_DB_PATH = "jdbc:sqlite:test.db";
 
   public List<T> selectAll() throws SQLException {
-    String query = String.format(Templates.SELECT_ALL,
+    String query = String.format(Templates.SELECT_ALL_TEMPLATE,
       getTable()
     );
 
-    try (Connection c = DriverManager.getConnection(TEST_DB_PATH)) {
-      try (Statement statement = c.createStatement()) {
-        ResultSet resultSet = statement.executeQuery(query);
-        List<T> result = new ArrayList<>();
+    return executeQuery(query, rs -> {
+      List<T> result = new ArrayList<>();
+      while (rs.next())
+        result.add(transform(rs));
 
-        while (resultSet.next())
-          result.add(transform(resultSet));
-
-        return result;
-      }
-    }
+      return result;
+    });
   }
 
   public void insert(T entity) throws SQLException {
@@ -37,10 +33,32 @@ public abstract class BaseDao<T> {
     executeInsertQuery(query);
   }
 
-  protected ResultSet executeQuery(String query) throws SQLException {
+  public T max() throws SQLException {
+    String query = String.format(Templates.MAX_TEMPLATE,
+      getTable());
+
+    return executeQuery(query, this::transform);
+  }
+
+  public T min() throws SQLException {
+    String query = String.format(Templates.MIN_TEMPLATE,
+      getTable());
+
+    return executeQuery(query, this::transform);
+  }
+
+  public Long count() throws SQLException {
+    String query = String.format(Templates.COUNT_TEMPLATE,
+      getTable());
+
+    return executeQuery(query, rs -> Long.valueOf(rs.getInt(1)));
+  }
+
+  protected <R> R executeQuery(String query, CheckedResultSetFunction<R> function) throws SQLException {
     try (Connection c = DriverManager.getConnection(TEST_DB_PATH)) {
       try (Statement statement = c.createStatement()) {
-        return statement.executeQuery(query);
+        ResultSet rs = statement.executeQuery(query);
+        return function.apply(rs);
       }
     }
   }
