@@ -35,7 +35,7 @@ public class Main {
         server.setHandler(context);
 
         context.addServlet(new ServletHolder(new AddProductServlet(new ProductDao())), "/add-product");
-        context.addServlet(new ServletHolder(new GetProductsServlet()),"/get-products");
+        context.addServlet(new ServletHolder(new GetProductsServlet(new ProductDao())),"/get-products");
         context.addServlet(new ServletHolder(new QueryServlet()),"/query");
 
         server.start();

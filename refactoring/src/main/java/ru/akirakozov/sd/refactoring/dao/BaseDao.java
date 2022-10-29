@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,24 @@ import java.util.stream.Collectors;
 public abstract class BaseDao<T> {
 
   private static final String TEST_DB_PATH = "jdbc:sqlite:test.db";
+
+  public List<T> selectAll() throws SQLException {
+    String query = String.format(Templates.SELECT_ALL,
+      getTable()
+    );
+
+    try (Connection c = DriverManager.getConnection(TEST_DB_PATH)) {
+      try (Statement statement = c.createStatement()) {
+        ResultSet resultSet = statement.executeQuery(query);
+        List<T> result = new ArrayList<>();
+
+        while (resultSet.next())
+          result.add(transform(resultSet));
+
+        return result;
+      }
+    }
+  }
 
   public void insert(T entity) throws SQLException {
     String query = String.format(Templates.INSERT_TEMPLATE,
@@ -45,11 +64,11 @@ public abstract class BaseDao<T> {
     return doTransform(map);
   }
 
-  private String joinFields(){
+  private String joinFields() {
     return String.join(", ", getFields());
   }
 
-  private String joinValues(T entity){
+  private String joinValues(T entity) {
     return getValues(entity).stream()
       .map(value -> "\"" + value + "\"")
       .collect(Collectors.joining(", "));

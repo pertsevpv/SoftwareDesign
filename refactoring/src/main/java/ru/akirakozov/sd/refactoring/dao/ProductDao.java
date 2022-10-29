@@ -30,7 +30,7 @@ public class ProductDao extends BaseDao<Product> {
     List<String> fields = getFields();
 
     String name = (String) map.get(fields.get(0));
-    Long price = (Long) map.get(fields.get(1));
+    Long price = Long.parseLong(map.get(fields.get(1)).toString());
 
     return new Product(name, price);
   }
