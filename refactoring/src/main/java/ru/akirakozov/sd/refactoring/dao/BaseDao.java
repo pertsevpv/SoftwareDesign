@@ -11,6 +11,14 @@ public abstract class BaseDao<T> {
 
   private static final String TEST_DB_PATH = "jdbc:sqlite:test.db";
 
+  public void createTable() throws SQLException {
+    String joinedFields = String.join(", ", getFieldsDefinitions());
+    String query = String.format(Templates.CREATE_TABLE_TEMPLATE,
+      getTable(), joinedFields);
+
+    executeUpdateQuery(query);
+  }
+
   public List<T> selectAll() throws SQLException {
     String query = String.format(Templates.SELECT_ALL_TEMPLATE,
       getTable()
@@ -30,7 +38,7 @@ public abstract class BaseDao<T> {
       getTable(), joinFields(), joinValues(entity)
     );
 
-    executeInsertQuery(query);
+    executeUpdateQuery(query);
   }
 
   public T max() throws SQLException {
@@ -63,7 +71,7 @@ public abstract class BaseDao<T> {
     }
   }
 
-  protected void executeInsertQuery(String query) throws SQLException {
+  protected void executeUpdateQuery(String query) throws SQLException {
     try (Connection c = DriverManager.getConnection(TEST_DB_PATH)) {
       try (Statement statement = c.createStatement()) {
         statement.executeUpdate(query);
@@ -95,6 +103,8 @@ public abstract class BaseDao<T> {
   protected abstract String getTable();
 
   protected abstract List<String> getFields();
+
+  protected abstract List<String> getFieldsDefinitions();
 
   protected abstract List<String> getValues(T entity);
 

@@ -3,6 +3,7 @@ package ru.akirakozov.sd.refactoring.dao;
 public class Templates {
 
   public static String INSERT_TEMPLATE = "INSERT INTO %s (%s) VALUES (%s)";
+  public static String CREATE_TABLE_TEMPLATE = "CREATE TABLE IF NOT EXISTS %s (%s)";
   public static String SELECT_ALL_TEMPLATE = "SELECT * FROM %s";
   public static String MAX_TEMPLATE = "SELECT * FROM %s ORDER BY PRICE DESC LIMIT 1";
   public static String MIN_TEMPLATE = "SELECT * FROM %s ORDER BY PRICE LIMIT 1";

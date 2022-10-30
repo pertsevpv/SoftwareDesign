@@ -27,6 +27,15 @@ public class ProductDao extends BaseDao<Product> {
   }
 
   @Override
+  protected List<String> getFieldsDefinitions() {
+    return List.of(
+      "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL",
+      "NAME TEXT NOT NULL",
+      "PRICE INT NOT NULL"
+    );
+  }
+
+  @Override
   protected List<String> getValues(Product entity) {
     String name = entity.getName();
     String price = String.valueOf(entity.getPrice());
